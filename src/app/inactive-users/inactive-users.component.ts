@@ -1,15 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../users.service';
 
 @Component({
   selector: 'app-inactive-users',
   templateUrl: './inactive-users.component.html',
   styleUrls: ['./inactive-users.component.css']
 })
-export class InactiveUsersComponent {
-  @Input() users: string[];
-  @Output() userSetToActive = new EventEmitter<number>();
+export class InactiveUsersComponent implements OnInit {
+  users: {name: string, status: boolean}[];
 
-  onSetToActive(id: number) {
-    this.userSetToActive.emit(id);
+  constructor(private userService: UserService){}
+
+  ngOnInit() {
+    // This is a reference type, by setting it with equal it's getting access
+    // to the exact same array as stored in the service.
+    this.users = this.userService.usersList;
+  }
+
+  onSetTo(name: string) {
+    this.userService.setToStatus(name);
   }
 }
