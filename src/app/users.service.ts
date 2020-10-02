@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { CounterService } from './counter.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
     // activeUsers = ['Max', 'Anna'];
     // inactiveUsers = ['Chris', 'Manu'];
+    constructor(private counterService: CounterService){}
 
     usersList = [
         {
@@ -27,6 +29,11 @@ export class UserService {
     setToStatus(name: string) {
         for (const iterator of this.usersList) {
             if (iterator.name === name) {
+                if (iterator.status === true) {
+                    this.counterService.incrementToInactive();
+                }else{
+                    this.counterService.incrementToActive();
+                }
                 iterator.status = !iterator.status;
             }
         }
